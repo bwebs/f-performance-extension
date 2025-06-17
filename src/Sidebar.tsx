@@ -3,12 +3,17 @@ import {
   Card,
   CodeBlock,
   Header,
+  IconButton,
   InputColor,
+  List,
   Select,
   Span,
 } from "@looker/components";
+import { Check } from "@styled-icons/material/Check";
 import React, { useState } from "react";
 import Balancer from "react-wrap-balancer";
+import { useAppContext } from "./AppContext";
+import ColorRow from "./ColorRow";
 import Settings from "./Settings";
 
 interface Driver {
@@ -27,6 +32,7 @@ const defaultDrivers: Driver[] = [
 const Sidebar: React.FC = () => {
   const [drivers, setDrivers] = useState<Driver[]>(defaultDrivers);
   const [selectedDriver, setSelectedDriver] = useState<string>("");
+  const { dashboard_options, applyColorChange } = useAppContext();
 
   const handleColorChange = (driverId: string, newColor: string) => {
     setDrivers(
@@ -65,6 +71,7 @@ const Sidebar: React.FC = () => {
           <Box mt="medium">
             <Span>Driver Color:</Span>
             <InputColor
+              hideInput
               value={
                 drivers.find((d) => d.id === selectedDriver)?.color || "#000000"
               }
@@ -72,12 +79,28 @@ const Sidebar: React.FC = () => {
                 handleColorChange(selectedDriver, e.target.value)
               }
             />
+            <IconButton
+              icon={<Check />}
+              label="Apply color"
+              onClick={() => {
+                // Add any additional logic here if needed
+                console.log("Color applied");
+              }}
+            />
           </Box>
         )}
       </Box>
-
+      <List>
+        <ColorRow
+          field={"users.traffic_source"}
+          value={"Email"}
+          onSave={(field, value) => {
+            applyColorChange(field, value);
+          }}
+        />
+      </List>
       <CodeBlock fontSize="xxsmall">
-        {JSON.stringify(drivers, null, 2)}
+        {JSON.stringify(dashboard_options, null, 2)}
       </CodeBlock>
 
       <Box flexGrow={1} />

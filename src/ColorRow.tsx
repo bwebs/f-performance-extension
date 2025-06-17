@@ -1,12 +1,10 @@
 import {
   FieldColor,
-  IconButton,
   InputText,
   ListItem,
   Space,
   Span,
 } from "@looker/components";
-import { Check } from "@styled-icons/material/Check";
 import React from "react";
 import styled from "styled-components";
 
@@ -34,7 +32,6 @@ const ColorRow: React.FC<ColorRowProps> = ({ field, value, onSave }) => {
             onSave(value, e.target.value);
           }}
         />
-        <IconButton icon={<Check />} label="Apply color" onClick={onSave} />
       </Space>
     </ListItem>
   );
